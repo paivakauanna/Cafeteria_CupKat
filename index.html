@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria - CupKat</title>
+    <link rel="shortcut icon" href="home.imagens/CupKat-Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="home/home.css">
+
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <!--Você está importando a biblioteca Tailwind CSS (versão 3.4.16) diretamente de um CDN (Content Delivery Network). Esse link permite usar Tailwind CSS em um projeto HTML puro, sem precisar instalar nada via npm ou configurar build tools como Webpack ou Vite.
+    Como funciona:
+    Ao carregar esse script no <head> ou antes do fechamento do <body> de sua página HTML, o Tailwind será aplicado.
+    Você poderá usar classes utilitárias como bg-blue-500, text-white, flex, p-4, etc., diretamente no seu HTML.-->
+
+    <script>
+        tailwind.config = {
+            theme: {
+            extend: {
+                colors: {
+                primary: "#FFD1DC", 
+                secondary: "#FFFAF0",
+                },
+                borderRadius: {
+                    none: "0px", //canto reto
+                    sm: "4px", //levemente arredondado
+                    DEFAULT: "8px", //valor padrão
+                    md: "12px", //médio
+                    lg: "16px", //grande
+                    xl: "20px", //extra grande
+                    "2xl": "24px", //muito grande
+                    "3xl": "32px", //mais arredondado ainda
+                    full: "9999px", // círculo completo
+                    bottom: "8px", //Personalizado (você teria que usar via class="rounded-bottom" se criar um plugin, pois Tailwind não reconhece "bottom" por padrão sem configuração extra)
+                },
+            },
+        },
+    };
+    </script>
+    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--Esses dois links informam ao navegador para iniciar conexões com o Google Fonts mais cedo, tornando o carregamento das fontes mais rápido.-->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <!--Esse link importa a fonte Pacifico do Google Fonts, que é uma fonte cursiva-->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!--Esse link importa duas fontes adicionais: Lato (com pesos 300, 400 e 700) e Playfair Display (com pesos 400, 500, 600 e 700). Essas fontes são mais versáteis e podem ser usadas para diferentes partes do design, como títulos e textos.-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <!--Esse link importa o Remix Icon, uma biblioteca de ícones vetoriais que pode ser usada para adicionar ícones ao seu site.-->
+</head>
+
+<body class="bg-[#FFF5EE] min-h-screen">
+
+<!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-primary bg-opacity-95 shadow-md z-50">
+    <!-- Esse código estiliza um elemento (provavelmente um cabeçalho ou barra de navegação) para que ele:
+    - Fique fixo no topo da tela,
+    - ubra toda a largura da tela (da esquerda até a direita),
+    - Tenha um fundo colorido com leve transparência,
+    - Uma sombra discreta,
+    - E fique acima de outros elementos na hierarquia visual da página. -->
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Cria uma seção centralizada e responsiva, com:
+    - Espaçamento interno confortável (padding)
+    - Itens dispostos em linha, com um à esquerda e outro à direita
+    - Verticalmente alinhados ao centro -->
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-[#FFD1DC] flex items-center justify-center mr-3">
+                <img src="home.imagens/CupKat-Logo.png" alt="logo">
+            </div>
+            <span class="font-['Pacifico'] text-[#4A3636] text-xl">CupKat</span>
+        </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Home</a>
+                <a href="#sobre" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Sobre</a>
+                <a href="#menu"class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Menu</a>
+                <a href="#delivery" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Delivery</a>
+                <a href="#contato" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Contato</a>
+            </nav>
+
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 flex items-center justify-center text-[#4A3636] hover:text-[#FF6B6B] cursor-pointer">
+                <i class="ri-user-line ri-lg"></i> <!-- Ícone de usuário -->
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center text-[#4A3636] hover:text-[#FF6B6B] cursor-pointer relative">
+                <i class="ri-shopping-bag-line ri-lg"></i> <!-- Ícone de sacola de compras -->
+            </div>
+            <button class="md:hidden w-8 h-8 flex items-center justify-center" id="mobile-menu-button">
+                <i class="ri-menu-line ri-lg text-[#4A3636]"></i>
+            </button>
+        </div>
+    </div>
+
+<!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+        <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+            <a href="#home" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Home</a>
+            <a href="#sobre" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Sobre</a>
+            <a href="#menu" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Menu</a>
+            <a href="#delivery" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Delivery</a>
+            <a href="#contato" class="text-[#4A3636] hover:text-[#FF6B6B] py-2">Contato</a>
+        </div>
+    </div>
+    </header>
+
+<!-- Seção de Destaque -->
+    <section id="home" 
+            class="pt-24 pb-16 md:pt-32 md:pb-24 relative"
+            style="background-image: url('https://readdy.ai/api/search-image?query=A%20dreamy%2C%20pastel-colored%20cafe%20scene%20with%20a%20beautiful%20strawberry%20cake%20in%20the%20foreground.%20The%20background%20shows%20a%20cozy%2C%20well-lit%20cafe%20interior%20with%20soft%20pink%20and%20cream%20colors.%20The%20lighting%20is%20warm%20and%20inviting%2C%20creating%20a%20serene%20atmosphere.%20The%20cake%20is%20decorated%20with%20fresh%20strawberries%20and%20cream%2C%20looking%20delicious%20and%20appetizing.&width=1920&height=1080&seq=hero1&orientation=landscape'); background-size: cover; background-position: center;">
+    <!--Essa <section> cria uma área com espaço vertical generoso, responsiva (com mais padding em telas maiores), e pronta para conter elementos com position: absolute dentro dela, como um botão flutuante, ícone decorativo ou texto animado.-->
+        <div class="absolute inset-0 bg-black bg-opacity-30"></div> <!--Opacidade da imagem-->
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+                    Doçura em cada fatia e em cada gole
+                </h1>
+                <p class="text-lg md:text-xl text-white mb-8">
+                    Experimente a mistura perfeita de guloseimas e café artesanal em nosso aconchegante café.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button class="bg-[#FF6B6B] hover:bg-[#ff5252] text-white py-3 px-8 rounded-lg whitespace-nowrap flex items-center">
+                        <i class="ri-shopping-bag-line mr-2"></i>
+                        Peça Agora
+                    </button>
+                    <button class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white border border-white py-3 px-8 rounded-lg whitespace-nowrap flex items-center">
+                        <i class="ri-restaurant-line mr-2"></i>
+                        Menu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Produtos em Destque-->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#4A3636] mb-3">
+                    Nossas Delícias Exclusivas
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Feitos à mão com amor e com os melhores ingredientes, nossos doces exclusivos transportarão você para um mundo de doçura e alegria.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!--Produto 1-->
+                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://readdy.ai/api/search-image?query=A%20close-up%20shot%20of%20a%20beautiful%20strawberry%20shortcake%20with%20layers%20of%20fluffy%20sponge%20cake%2C%20fresh%20whipped%20cream%2C%20and%20juicy%20strawberries.%20The%20cake%20is%20on%20a%20white%20plate%20against%20a%20soft%20pink%20background.%20The%20lighting%20is%20bright%20and%20clean%2C%20highlighting%20the%20texture%20of%20the%20cake%20and%20the%20freshness%20of%20the%20strawberries.&width=600&height=400&seq=prod1&orientation=landscape"
+                        alt="Strawberry Shortcake"
+                        class="w-full h-full object-cover object-top"/>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="cursive text-2xl text-[#4A3636] mb-2">
+                            Bolo Pata de Morango
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            Camadas de bolo fofo com morangos frescos e chantilly, um equilíbrio perfeito de doçura.
+                        </p>
+                        <div class="flex items-center justify-between item-center">
+                            <span class="text-[#FF6B6B] font-bold">R$22,90 (Fatia)</span>
+                            <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                                <i class="ri-shopping-cart-line mr-2"></i>Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--Produto 2-->
+                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-64 overflow-hidden">
+                        <img
+                        src="https://readdy.ai/api/search-image?query=A%20beautiful%20latte%20art%20in%20a%20white%20ceramic%20cup%2C%20featuring%20a%20cat%20design%20drawn%20in%20the%20foam.%20The%20coffee%20has%20a%20rich%2C%20caramel%20color%20and%20is%20placed%20on%20a%20wooden%20table.%20Next%20to%20it%20is%20a%20small%20plate%20with%20a%20strawberry%20macaron.%20The%20background%20is%20softly%20blurred%2C%20showing%20a%20cozy%20cafe%20environment%20with%20warm%20lighting.&width=600&height=400&seq=prod2&orientation=landscape"
+                        alt="Cat Latte Art"
+                        class="w-full h-full object-cover object-top"/>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="cursive text-2xl text-[#4A3636] mb-2">
+                            Latte Gatíneo
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            Nosso latte com adorável arte de gato, feito com grãos premium e espuma de leite aveludada.
+                        </p>
+                        <div class="flex items-center justify-between item-center">
+                            <span class="text-[#FF6B6B] font-bold">R$11,90</span>
+                            <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                                <i class="ri-shopping-cart-line mr-2"></i>Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+            </div>
+            <!--Produto 3-->
+            <div class="product-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="h-64 overflow-hidden">
+                    <img
+                    src="https://readdy.ai/api/search-image?query=A%20plate%20of%20colorful%20Japanese-inspired%20mochi%20desserts%20shaped%20like%20cats%20and%20strawberries.%20The%20mochi%20have%20different%20pastel%20colors%20-%20pink%2C%20white%2C%20and%20light%20green.%20Theyre%20arranged%20artistically%20on%20a%20white%20ceramic%20plate%20with%20a%20few%20fresh%20strawberries%20as%20garnish.%20The%20background%20is%20a%20soft%20cream%20color%2C%20and%20the%20lighting%20is%20bright%20and%20clean.&width=600&height=400&seq=prod3&orientation=landscape"
+                    alt="Neko Mochi"
+                    class="w-full h-full object-cover object-top"/>
+                </div>
+                <div class="p-6">
+                        <h3 class="cursive text-2xl text-[#4A3636] mb-2">
+                            Neko Mochi
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            Adorável mochi em formato de gato com recheio de morango.
+                        </p>
+                        <div class="flex items-center justify-between item-center">
+                            <span class="text-[#FF6B6B] font-bold">R$7,90</span>
+                            <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                                <i class="ri-shopping-cart-line mr-2"></i>Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+<!-- Sobre Nós -->
+    <section id="sobre" class="py-16 bg-[#FFFAF0]">
+        <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2">
+                <img
+                src="https://readdy.ai/api/search-image?query=A%20cozy%2C%20pastel-colored%20cafe%20interior%20with%20cat-themed%20decorations.%20The%20cafe%20has%20soft%20pink%20walls%2C%20comfortable%20seating%20with%20cream-colored%20cushions%2C%20and%20small%20potted%20plants.%20There%20are%20subtle%20cat%20silhouettes%20and%20paw%20prints%20as%20decorative%20elements.%20The%20lighting%20is%20warm%20and%20inviting%2C%20creating%20a%20serene%20atmosphere.%20A%20few%20customers%20are%20enjoying%20desserts%20at%20tables%2C%20and%20theres%20a%20display%20counter%20with%20strawberry%20cakes%20visible.&width=800&height=600&seq=about1&orientation=landscape"
+                alt="Cafe Interior"
+                class="w-full h-auto rounded-lg shadow-lg"/>
+            </div>
+            <div class="md:w-1/2">
+            <div class="flex items-center mb-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#4A3636]">
+                Nossa História
+                </h2>
+                <i class="ri-heart-fill ri-lg text-[#FF6B6B] ml-3"></i>
+            </div>
+            <p class="text-gray-600 mb-6">
+                Fundada em 2025 pela chef confeiteira Kauanna Paiva, a Cafeteria - CupKat nasceu de uma paixão compartilhada pela cultura de sobremesas deliciosas e do amor por gatos.
+            </p>
+            <p class="text-gray-600 mb-6">
+                Nossa missão é criar um refúgio tranquilo onde as pessoas possam escapar da agitação da vida cotidiana e desfrutar de guloseimas meticulosamente elaboradas em um ambiente acolhedor e inspirado em gatos. Cada receita é desenvolvida com cuidado, usando ingredientes de origem local sempre que possível.
+            </p>
+            <p class="text-gray-600 mb-8">
+                O que nos torna especiais é o nosso compromisso em levar alegria através do sabor e da apresentação. Cada sobremesa e bebida é criada para encantar não apenas o seu paladar, mas também os seus olhos e o seu coração.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm">
+                <div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full mr-4">
+                    <i class="ri-cake-3-line ri-lg text-[#4A3636]"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[#4A3636]">Qualidade Artesanal</h3>
+                    <p class="text-sm text-gray-600">Feito à mão com amor</p>
+                </div>
+                </div>
+                <div class="flex items-center bg-white p-4 rounded-lg shadow-sm">
+                <div class="w-12 h-12 flex items-center justify-center bg-primary rounded-full mr-4">
+                    <i class="ri-heart-2-line ri-lg text-[#4A3636]"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[#4A3636]">Inspirado em gatos</h3>
+                    <p class="text-sm text-gray-600">
+                    Desing fofo em todos os lugares
+                    </p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+<!-- Seleção de Menu-->
+    <section id="menu" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#4A3636] mb-3">
+                    Nosso Menu
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Explore nossa seleção de iguarias e bebidas artesanais, todas elaboradas com cuidado e atenção aos detalhes.
+                </p>
+            </div>
+
+<!-- Aba do Menu-->
+    <div class="flex justify-center mb-8">
+        <div class="inline-flex bg-gray-100 p-1 rounded-full">
+            <button class="tab-button active px-6 py-2 rounded-full whitespace-nowrap" data-tab="sobremesas">
+                Sobremesas
+            </button>
+            <button class="tab-button px-6 py-2 rounded-full whitespace-nowrap" data-tab="bebidas">
+                Bebidas
+            </button>
+            <button class="tab-button px-6 py-2 rounded-full whitespace-nowrap" data-tab="sazonal">
+                Sazonal
+            </button>
+        </div>
+    </div>
+
+<!-- Aba de Sobremesas-->
+    <div class="tab-content active" id="sobremesas-content">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Menu Item 1 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20close-up%20of%20a%20strawberry%20cream%20puff%20pastry%20on%20a%20white%20plate.%20The%20pastry%20is%20golden%20brown%20and%20filled%20with%20pink%20strawberry%20cream%20thats%20slightly%20visible.%20Theres%20a%20fresh%20strawberry%20on%20top%20and%20a%20light%20dusting%20of%20powdered%20sugar.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=menu1&orientation=squarish" 
+                    alt="Profiterole de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Profiterole de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Massa choux leve recheada com creme de morango
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6b6b] font-bold">R$12,90</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 2 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20Japanese%20strawberry%20roll%20cake%20%28Swiss%20roll%29%20on%20a%20white%20plate.%20The%20cake%20has%20a%20perfect%20spiral%20pattern%20with%20white%20cream%20and%20fresh%20strawberry%20pieces%20visible%20in%20the%20filling.%20The%20exterior%20is%20a%20light%20sponge%20cake.%20Theres%20a%20small%20fork%20beside%20it%20and%20a%20few%20strawberry%20slices%20as%20garnish.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=menu2&orientation=squarish" 
+                    alt="Bolo de Rocambole de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Bolo de Rocambole de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Bolo macio enrolado com morangos frescos
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6b6b] font-bold">R$18,90</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 3 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20cat-shaped%20strawberry%20mousse%20dessert%20on%20a%20white%20plate.%20The%20mousse%20is%20light%20pink%20and%20shaped%20like%20a%20cute%20cat%20face%20with%20chocolate%20details%20for%20the%20eyes%20and%20whiskers.%20There%20are%20fresh%20strawberry%20pieces%20around%20it%20as%20decoration.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=menu3&orientation=squarish"
+                    alt="Mousse de Morango Neko"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Mousse de Morango Neko
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Mousse de morango em formato de gato com detalhes em chocolate
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$6,50</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 4 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20daifuku%20%28Japanese%20mochi%20with%20strawberry%20filling%29%20on%20a%20small%20white%20plate.%20The%20mochi%20is%20dusted%20with%20a%20light%20coating%20of%20potato%20starch%20and%20has%20a%20fresh%20strawberry%20visible%20through%20the%20translucent%20mochi%20skin.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=menu4&orientation=squarish"
+                    alt="Strawberry Daifuku"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Daifuku de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Mochi tradicional com morango inteiro dentro
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$5,95</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 5 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20parfait%20in%20a%20tall%20glass.%20The%20parfait%20has%20layers%20of%20strawberry%20ice%20cream%2C%20fresh%20strawberries%2C%20whipped%20cream%2C%20and%20crumbled%20cookies.%20Its%20topped%20with%20a%20whole%20strawberry%20and%20a%20cat-shaped%20cookie.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=menu5&orientation=squarish"
+                    alt="Parfait de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Parfait de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Camadas de sorvete, frutas vermelhas frescas e biscoitos
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$23,90</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 6 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20tart%20on%20a%20white%20plate.%20The%20tart%20has%20a%20golden%20pastry%20shell%20filled%20with%20custard%20cream%20and%20topped%20with%20glazed%20fresh%20strawberries%20arranged%20in%20a%20pattern.%20Theres%20a%20small%20mint%20leaf%20garnish.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=menu6&orientation=squarish"
+                    alt="Torta de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Torta de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Casca de torta amanteigada com creme e frutas vermelhas frescas
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$12,90</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Aba de Bebidas-->
+    <div class="tab-content hidden" id="bebidas-content">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Menu Item 1 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20latte%20in%20a%20clear%20glass%20mug.%20The%20drink%20has%20a%20pink%20strawberry%20layer%20at%20the%20bottom%2C%20white%20milk%20in%20the%20middle%2C%20and%20is%20topped%20with%20a%20layer%20of%20foam%20with%20a%20cat%20face%20design%20drawn%20in%20chocolate.%20Theres%20a%20strawberry%20slice%20on%20the%20rim%20of%20the%20glass.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=bev1&orientation=squarish"
+                alt="Latte de Morango"
+                class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Latte de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Espresso com calda de morango <br>e leite
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$7,90</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 2 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20matcha%20latte%20in%20a%20white%20ceramic%20cup.%20The%20drink%20is%20a%20vibrant%20green%20with%20a%20white%20foam%20layer%20on%20top%20featuring%20a%20cat%20face%20latte%20art%20design.%20Theres%20a%20small%20bamboo%20matcha%20whisk%20visible%20in%20the%20background.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=bev2&orientation=squarish"
+                    alt="Matcha Latte"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Matcha Latte
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Matcha em pó premium com leite vaporizado
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$6,50</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 3 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20milk%20tea%20in%20a%20clear%20cup%20with%20a%20wide%20straw.%20The%20drink%20is%20light%20pink%20with%20tapioca%20pearls%20visible%20at%20the%20bottom.%20The%20cup%20has%20a%20cute%20cat%20face%20design%20printed%20on%20it.%20There%20are%20fresh%20strawberry%20slices%20as%20garnish.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=bev3&orientation=squarish"
+                    alt="Chá de Boba de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Chá de Boba de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Chá de leite com morango e pérolas de tapioca
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$12,90</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 4 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20hot%20chocolate%20in%20a%20pink%20mug%20with%20a%20cat-shaped%20handle.%20The%20drink%20is%20topped%20with%20whipped%20cream%2C%20chocolate%20shavings%2C%20and%20a%20strawberry.%20Theres%20a%20cat-shaped%20cookie%20on%20the%20side.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=bev4&orientation=squarish"
+                    alt="Chocolate Quente de Gato"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Chocolate Quente de Gato
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Chocolate quente rico com marshmallow em formato de gato
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$14,95</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 5 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20smoothie%20in%20a%20mason%20jar%20with%20a%20striped%20paper%20straw.%20The%20smoothie%20is%20bright%20pink%20and%20topped%20with%20whipped%20cream%20and%20fresh%20strawberry%20pieces.%20Theres%20a%20cat-shaped%20cookie%20garnish.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=bev5&orientation=squarish"
+                    alt="Smoothie de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Smoothie de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Morangos frescos batidos com iogurte e mel
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$9,50</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 6 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20Japanese-style%20iced%20coffee%20in%20a%20tall%20glass.%20The%20coffee%20is%20served%20over%20a%20large%20ice%20cube%2C%20with%20a%20layer%20of%20cream%20floating%20on%20top.%20Theres%20a%20small%20cat-shaped%20cookie%20on%20the%20side%20and%20a%20metal%20straw%20in%20the%20glass.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=bev6&orientation=squarish"
+                    alt="Café Gelado "
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Café Gelado 
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Café gelado com creme, coado lentamente
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$5,75</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Aba Sazonal -->
+    <div class="tab-content hidden" id="sazonal-content">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Menu Item 1 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20sakura%20%28cherry%20blossom%29%20strawberry%20cake%20on%20a%20white%20plate.%20The%20cake%20has%20layers%20of%20pink%20sponge%20cake%20with%20strawberry%20cream%20filling.%20Its%20decorated%20with%20fresh%20strawberries%20and%20small%20sugar%20cherry%20blossoms.%20The%20background%20is%20a%20soft%20cream%20color%20with%20subtle%20cherry%20blossom%20petals.&width=300&height=300&seq=seas1&orientation=squarish"
+                    alt="Bolo Sakura de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Bolo Sakura de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Especial de primavera com essência de flor de cerejeira
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$12,95 (Fatia)</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 2 -->
+            <div  class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20summer-themed%20strawberry%20shaved%20ice%20dessert%20in%20a%20glass%20bowl.%20The%20shaved%20ice%20is%20topped%20with%20fresh%20strawberries%2C%20condensed%20milk%2C%20and%20a%20cat-shaped%20cookie.%20Theres%20a%20small%20paper%20umbrella%20as%20decoration.%20The%20background%20is%20a%20soft%20cream%20color.&width=300&height=300&seq=seas2&orientation=squarish"
+                    alt="Kakigori de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Kakigori de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Sobremesa japonesa especial de verão com raspadinha
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$6,50</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 3 -->
+            <div  class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=An%20autumn-themed%20strawberry%20and%20chestnut%20mont%20blanc%20dessert%20on%20a%20small%20plate.%20The%20dessert%20has%20a%20tart%20base%20topped%20with%20strawberry%20cream%20and%20chestnut%20cream%20piped%20to%20look%20like%20spaghetti.%20Its%20decorated%20with%20a%20glazed%20chestnut%20and%20strawberry.%20The%20background%20is%20a%20soft%20cream%20color%20with%20subtle%20autumn%20leaf%20decorations.&width=300&height=300&seq=seas3&orientation=squarish"
+                    alt="Mont Blanc de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Mont Blanc de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Especial de outono com creme de castanha e morango
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$7,25</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu Item 4 -->
+            <div  class="menu-item bg-white rounded-lg shadow-md overflow-hidden flex">
+                <div class="w-1/3">
+                    <img src="https://readdy.ai/api/search-image?query=A%20winter-themed%20hot%20strawberry%20drink%20in%20a%20white%20mug.%20The%20drink%20is%20deep%20red%20and%20topped%20with%20whipped%20cream%20and%20a%20strawberry.%20Theres%20a%20cat-shaped%20cinnamon%20cookie%20on%20the%20side.%20The%20background%20shows%20subtle%20snowflake%20decorations%20and%20a%20soft%20cream%20color.&width=300&height=300&seq=seas4&orientation=squarish"
+                    alt="Mont Blanc de Morango"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div class="w-2/3 p-4">
+                    <h3 class="font-bold text-[#4A3636]">
+                        Mont Blanc de Morango
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Especial de inverno com canela e cravo
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#FF6B6B] font-bold">R$6,25</span>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap flex items-center">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="text-center mt-12">
+            <a href="menu/fullmenu.html" data-readdy="true" class="bg-[#FF6B6B] hover:bg-[#ff5252] text-white py-3 px-8 rounded-lg whitespace-nowrap flex items-center mx-auto">
+                <i class="ri-menu-line mr-2"></i>View Full Menu
+            </a>
+        </div>
+    </div>
+    </section>
+
+<!-- Delivery Section -->
+    <section id="delivery" class="py-16 bg-[#FFFAF0]">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#4A3636] mb-3">
+                    Serviço de Delivery
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Aproveite nossas delícias entregues diretamente na sua porta. Entregamos em um raio de 25 km do nosso café.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2 bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-bold text-[#4A3636] mb-4">
+                        Como Funciona
+                    </h3>
+                <div class="space-y-6">
+                <div class="flex items-start">
+                    <div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full mr-4 flex-shrink-0">
+                        <span class="font-bold text-[#4A3636]">1</span>
+                    </div>
+                <div>
+                    <h4 class="font-bold text-[#4A3636] mb-1">
+                        Escolha Seus Petiscos
+                    </h4>
+                    <p class="text-gray-600">
+                        Navegue pelo nosso cardápio e selecione suas sobremesas e bebidas favoritas.
+                    </p>
+                </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full mr-4 flex-shrink-0">
+                        <span class="font-bold text-[#4A3636]">2</span>
+                    </div>
+                <div>
+                    <h4 class="font-bold text-[#4A3636] mb-1">Faça Seu Pedido</h4>
+                    <p class="text-gray-600">
+                        Faça seu pedido online ou por telefone pelo número (555) 123-4567.
+                    </p>
+                </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full mr-4 flex-shrink-0">
+                        <span class="font-bold text-[#4A3636]">3</span>
+                    </div>
+                <div>
+                    <h4 class="font-bold text-[#4A3636] mb-1">
+                        Aguarde a entrega
+                    </h4>
+                    <p class="text-gray-600">
+                        Nosso lindo veículo de entrega com tema de gato chegará em 30 a 45 minutos.
+                    </p>
+                </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full mr-4 flex-shrink-0">
+                        <span class="font-bold text-[#4A3636]">4</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#4A3636] mb-1">
+                            Aproveite!
+                        </h4>
+                        <p class="text-gray-600">
+                            Desembale seus petiscos e aproveite a experiência CupKat em casa.
+                        </p>
+                    </div>
+                </div>
+                </div>
+            <div class="mt-8">
+                <h4 class="font-bold text-[#4A3636] mb-3">Opções de Entrega</h4>
+            <div class="space-y-3">
+                <div class="flex items-center">
+                    <input 
+                        type="radio" 
+                        name="delivery-option" 
+                        id="standard" 
+                        class="custom-radio mr-3">
+                    <label for="standard" class="text-gray-600">
+                        Entrega Padrão (30-45 min) - R$ 3,99
+                    </label>
+                </div>
+                <div class="flex items-center">
+                    <input 
+                        type="radio" 
+                        name="delivery-option" 
+                        id="express" 
+                        class="custom-radio mr-3">
+                    <label for="express" class="text-gray-600">
+                        Entrega Rápida (15-25 min) - R$ 6,99
+                    </label>
+                </div>
+                <div class="flex items-center">
+                    <input 
+                        type="radio" 
+                        name="delivery-option" 
+                        id="scheduled" 
+                        class="custom-radio mr-3">
+                    <label for="scheduled" class="text-gray-600">
+                        Entrega Agendada (Escolha seu horário) - R$ 4,99
+                    </label>
+                </div>
+            </div>
+            </div>
+                </div>
+            <div class="md:w-1/2">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-bold text-[#4A3636] mb-4">
+                        Área de Entrega
+                    </h3>
+            <div class="h-64 bg-gray-200 rounded-lg overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29257.429003238474!2d-46.66745216261869!3d-23.562027287466965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59b756463d61%3A0x9f3d1e6f7f40964!2sBela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1751902082928!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <p class="mt-4 text-gray-600">
+                Atualmente, entregamos nos bairros de Consolação, Paraíso, Liberdade, Sé e Vila Mariana. O pedido mínimo para entrega é de R$59,90.
+            </p>
+                </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-bold text-[#4A3636] mb-4">
+                    Pedidos Especiais
+                </h3>
+                <p class="text-gray-600 mb-4">
+                    Precisa de um arranjo especial ou tem restrições alimentares? Conte para a gente!
+                </p>
+                <textarea class="w-full border border-gray-200 rounded-lg p-3 h-24 focus:outline-none focus:border-primary" placeholder="Suas instruções especiais aqui..."></textarea>
+            <div class="mt-4 flex items-center">
+                <input 
+                    type="checkbox" 
+                    id="gift-wrapping" 
+                    class="custom-checkbox mr-3">
+                <label for="gift-wrapping" class="text-gray-600">
+                    Adicione embrulho para presente (+R$ 2,50)
+                </label>
+            </div>
+            </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Avaliações -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#4A3636] mb-3">
+            O que nossos clientes dizem
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Não acredite apenas na nossa palavra - ouça nossos clientes satisfeitos que sempre voltam para mais.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Avaliação 1 -->
+            <div class="bg-primary bg-opacity-10 rounded-lg p-6 relative">
+            <div class="absolute top-0 right-0 w-8 h-8 bg-primary rounded-full -mt-3 -mr-3 flex items-center justify-center">
+                <i class="ri-double-quotes-l text-white"></i>
+            </div>
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                    <img src="https://readdy.ai/api/search-image?query=A%20professional%20headshot%20of%20a%20young%20Asian%20woman%20with%20long%20black%20hair%2C%20smiling%20warmly%20at%20the%20camera.%20She%20has%20a%20friendly%2C%20approachable%20expression%20and%20is%20wearing%20professional%20attire.%20The%20background%20is%20neutral%20and%20soft.&width=100&height=100&seq=test1&orientation=squarish"
+                    alt="Emily Chen"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div>
+                    <h4 class="font-bold text-[#4A3636]">Emily Chen</h4>
+                    <div class="flex text-[#FF6B6B]">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                    </div>
+                </div>
+            </div>
+            <p class="text-gray-600">
+            "O bolo de morango aqui é absolutamente divino! O equilíbrio entre doce e azedo é perfeito, e a arte do latte de gato sempre me faz sorrir. Este é o meu lugar favorito para uma escapada doce."
+            </p>
+            </div>
+            <!-- Avaliação 2 -->
+            <div class="bg-primary bg-opacity-10 rounded-lg p-6 relative">
+            <div class="absolute top-0 right-0 w-8 h-8 bg-primary rounded-full -mt-3 -mr-3 flex items-center justify-center">
+                <i class="ri-double-quotes-l text-white"></i>
+            </div>
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                    <img src="https://readdy.ai/api/search-image?query=A%20professional%20headshot%20of%20a%20middle-aged%20Caucasian%20man%20with%20short%20brown%20hair%20and%20glasses%2C%20smiling%20confidently%20at%20the%20camera.%20He%20has%20a%20well-groomed%20beard%20and%20is%20wearing%20a%20casual%20button-up%20shirt.%20The%20background%20is%20neutral%20and%20soft.&width=100&height=100&seq=test2&orientation=squarish"
+                    alt="Michael Thompson"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div>
+                    <h4 class="font-bold text-[#4A3636]">
+                        Michael Thompson
+                    </h4>
+                    <div class="flex text-[#FF6B6B]">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-half-fill"></i>
+                    </div>
+                </div>
+            </div>
+            <p class="text-gray-600">
+                "Normalmente não sou fã de sobremesas, mas as delícias inspiradas em gatos aqui me conquistaram. O ambiente é tão tranquilo e a equipe é incrivelmente simpática. O serviço de entrega também é rápido e confiável!"
+            </p>
+            </div>
+            <!-- Avaliação 3 -->
+            <div class="bg-primary bg-opacity-10 rounded-lg p-6 relative">
+            <div class="absolute top-0 right-0 w-8 h-8 bg-primary rounded-full -mt-3 -mr-3 flex items-center justify-center">
+                <i class="ri-double-quotes-l text-white"></i>
+            </div>
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                    <img src="https://readdy.ai/api/search-image?query=A%20professional%20headshot%20of%20a%20young%20Black%20woman%20with%20natural%20curly%20hair%2C%20smiling%20brightly%20at%20the%20camera.%20She%20has%20a%20vibrant%2C%20energetic%20expression%20and%20is%20wearing%20a%20colorful%20top.%20The%20background%20is%20neutral%20and%20soft.&width=100&height=100&seq=test3&orientation=squarish"
+                    alt="Sophia Williams"
+                    class="w-full h-full object-cover object-top">
+                </div>
+                <div>
+                    <h4 class="font-bold text-[#4A3636]">
+                        Sophia Williams
+                    </h4>
+                    <div class="flex text-[#FF6B6B]">
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                        <i class="ri-star-fill"></i>
+                    </div>
+                </div>
+            </div>
+            <p class="text-gray-600">
+                "Encomendei um bolo de aniversário para minha filha e eles criaram um bolo de morango em formato de gato adorável! Não era apenas lindo, mas delicioso. Todos na festa ficaram impressionados. Com certeza pedirei novamente!"
+            </p>
+            </div>
+        </div>
+        </div>
+    </section>
+
+<!-- Seleção de Contato-->
+    <section id="contato" class="py-16 bg-[#FFFAF0]">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#4A3636] mb-3">
+                Entre em contato conosco
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Tem dúvidas ou pedidos especiais? Adoraríamos ouvir de você! 
+            </p>
+        </div>
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="md:w-1/2 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-bold text-[#4A3636] mb-4">
+                    Envie-nos uma mensagem
+                </h3>
+            <form>
+                <div class="mb-4">
+                    <label for="nome" class="block text-gray-600 mb-2">
+                        Seu nome
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        class="w-full border border-gray-200 rounded-lg p-3 focus:outline-none focus:border-primary"
+                        placeholder="Digite seu nome"/>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-600 mb-2">
+                        Seu email
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        class="w-full border border-gray-200 rounded-lg p-3 focus:outline-none focus:border-primary"
+                        placeholder="Digite seu email"/>
+                </div>
+                <div class="mb-4">
+                    <label for="assunto" class="block text-gray-600 mb-2">
+                        Assunto
+                    </label>
+                <select id="assunto" class="w-full border border-gray-200 rounded-lg p-3 pr-8 focus:outline-none focus:border-primary appearance-none bg-white relative">
+                    <option value="">Selecione um assunto</option>
+                    <option value="general">Consulta Geral</option>
+                    <option value="order">Pergunta Sobre Pedido</option>
+                    <option value="catering">Serviço Fornecido</option>
+                    <option value="feedback">Feedback</option>
+                </select>
+                </div>
+                <div class="mb-6">
+                    <label for="message" class="block text-gray-600 mb-2">
+                        Sua mensagem
+                    </label>
+                    <textarea id="message" class="w-full border border-gray-200 rounded-lg p-3 h-32 focus:outline-none focus:border-primary" placeholder="Digite sua mensagem..."></textarea>
+                </div>
+                <button type="submit" class="bg-[#FF6B6B] hover:bg-[#ff5252] text-white py-3 px-6 rounded-lg whitespace-nowrap">
+                    Envie sua mensagem
+                </button>
+            </form>
+            </div>
+            <div class="md:w-1/2">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-2xl font-bold text-[#4A3636] mb-4">
+                    Visite o Nosso Café
+                </h3>
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4 flex-shrink-0">
+                        <i class="ri-map-pin-line text-[#FF6B6B]"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#4A3636] mb-1">
+                            Endereço
+                        </h4>
+                        <p class="text-gray-600">
+                            Rua das Rosas Doces, 123 - Bela Vista, São Paulo - SP, 01310-050
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4 flex-shrink-0">
+                        <i class="ri-time-line text-[#FF6B6B]"></i>
+                    </div>
+                <div>
+                    <h4 class="font-bold text-[#4A3636] mb-1">
+                        Horário de funcionamento
+                    </h4>
+                    <p class="text-gray-600">
+                        Segunda a sexta: 8h00 - 20h00
+                    </p>
+                    <p class="text-gray-600">
+                        Sábado - Domingo: 9h00 - 21h00
+                    </p>
+                </div>
+                </div>
+            <div class="flex items-start">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4 flex-shrink-0">
+                    <i class="ri-phone-line text-[#FF6B6B]"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-[#4A3636] mb-1">
+                        Telefone
+                    </h4>
+                    <p class="text-gray-600">(555) 123-4567</p>
+                </div>
+            </div>
+            <div class="flex items-start">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4 flex-shrink-0">
+                    <i class="ri-mail-line text-[#FF6B6B]"></i>
+                </div>
+            <div>
+                <h4 class="font-bold text-[#4A3636] mb-1">
+                    Email
+                </h4>
+                <p class="text-gray-600">
+                    ola@cupkat.cafe
+                </p>
+            </div>
+            </div>
+            </div>
+            </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-2xl font-bold text-[#4A3636] mb-4">
+                Siga-nos
+            </h3>
+            <p class="text-gray-600 mb-4">
+                Fique por dentro das nossas últimas novidades e promoções!
+            </p>
+            <div class="flex space-x-4">
+                <a href="#" class="w-10 h-10 flex items-center justify-center bg-[#FF6B6B] text-white rounded-full hover:bg-[#ff5252] transition-colors">
+                    <i class="ri-instagram-line"></i>
+                </a>
+                <a href="#" class="w-10 h-10 flex items-center justify-center bg-[#FF6B6B] text-white rounded-full hover:bg-[#ff5252] transition-colors">
+                    <i class="ri-facebook-fill"></i>
+                </a>
+                <a href="#" class="w-10 h-10 flex items-center justify-center bg-[#FF6B6B] text-white rounded-full hover:bg-[#ff5252] transition-colors">
+                    <i class="ri-twitter-x-line"></i>
+                </a>
+                <a href="#" class="w-10 h-10 flex items-center justify-center bg-[#FF6B6B] text-white rounded-full hover:bg-[#ff5252] transition-colors">
+                    <i class="ri-tiktok-line"></i>
+                </a>
+            </div>
+            <div class="mt-6">
+                <h4 class="font-bold text-[#4A3636] mb-3">
+                    
+                </h4>
+                <div class="flex">
+                    <input
+                        type="email"
+                        class="flex-grow border border-gray-200 rounded-l-lg p-3 focus:outline-none focus:border-primary"
+                        placeholder="Seu endereço de email"/>
+                    <button class="bg-[#FF6B6B] hover:bg-[#ff5252] text-white py-3 px-4 rounded-r-lg whitespace-nowrap">
+                        Inscrever-se
+                    </button>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+<!-- Footer -->
+    <footer class="bg-[#4A3636] text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3">
+                            <span class="font-['Pacifico'] text-[#FF6B6B] text-lg">
+                                <img src="home.imagens/CupKat-Logo.png" alt="">
+                            </span>
+                        </div>
+                            <span class="font-['Pacifico'] text-white text-xl">
+                                CupKat
+                            </span>
+                    </div>
+                            <p class="text-gray-300 mb-4">
+                                Um café aconchegante onde sobremesas inspiradas em gatos se unem à adorável estética felina. Cada guloseima é preparada com amor e carinho.
+                            </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-300 hover:text-white">
+                                <i class="ri-instagram-line ri-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-300 hover:text-white">
+                                <i class="ri-facebook-fill ri-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-300 hover:text-white">
+                                <i class="ri-twitter-x-line ri-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-300 hover:text-white">
+                                <i class="ri-tiktok-line ri-lg"></i>
+                            </a>
+                        </div>
+                </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">
+                            Links Rápidos
+                        </h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#home" class="text-gray-300 hover:text-white">Home</a>
+                            </li>
+                            <li>
+                                <a href="#menu" class="text-gray-300 hover:text-white">Menu</a>
+                            </li>
+                            <li>
+                                <a href="#sobre" class="text-gray-300 hover:text-white">Sobre Nós</a>
+                            </li>
+                            <li>
+                                <a href="#delivery" class="text-gray-300 hover:text-white">Delivery</a>
+                            </li>
+                            <li>
+                                <a href="#contato" class="text-gray-300 hover:text-white">Contato</a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-gray-300 hover:text-white">Careers</a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-gray-300 hover:text-white">Privacy Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">
+                        Horário de Funcionamento
+                    </h3>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between">
+                                <span class="text-gray-300">Segunda - Sexta</span>
+                                <span class="text-white">8h00 - 20h00 </span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-gray-300">Sábado - Domingo</span>
+                                <span class="text-white">9h00 - 21h00 </span>
+                            </li>
+                        </ul>
+                    <h3 class="text-xl font-bold mt-6 mb-4">
+                        Contato
+                    </h3>
+                    <address class="not-italic text-gray-300">
+                        Rua das Rosas Doces, 123<br />
+                        Bela Vista, São Paulo - SP, 01310-050<br />
+                        Phone: (555) 123-4567<br />
+                        Email: ola@cupkat.cafe
+                    </address>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    © 2025 CupKat - Cafeteria. Todos os direitos reservados.
+                </p>
+            <div class="flex space-x-4">
+                <div class="w-8 h-5 flex items-center justify-center">
+                    <i class="ri-visa-line ri-lg text-gray-300"></i>
+                </div>
+                <div class="w-8 h-5 flex items-center justify-center">
+                    <i class="ri-mastercard-line ri-lg text-gray-300"></i>
+                </div>
+                <div class="w-8 h-5 flex items-center justify-center">
+                    <i class="ri-paypal-line ri-lg text-gray-300"></i>
+                </div>
+                <div class="w-8 h-5 flex items-center justify-center">
+                    <i class="ri-apple-fill ri-lg text-gray-300"></i>
+                </div>
+            </div>
+            </div>
+        </div>
+    </footer>
+
+<!-- Consentimento de cookies -->
+    <div id="cookie-consent" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md bg-white rounded-lg shadow-lg p-6 z-50">
+        <div class="flex items-start">
+            <div class="w-10 h-10 flex items-center justify-center bg-primary rounded-full mr-4 flex-shrink-0">
+                <img src="home.imagens/CupKat-Logo.png" alt="">
+                <i class="ri-cookie-line text-[#4A3636]"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-[#4A3636] mb-2">
+                    Usamos cookies!
+                </h4>
+                <p class="text-gray-600 text-sm mb-4">
+                    Este site usa cookies para garantir que você tenha a melhor experiência em nosso site. Eles nos ajudam a entender como você interage com nosso site.
+                </p>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="accept-cookies" class="bg-[#FF6B6B] hover:bg-[#ff5252] text-white py-2 px-4 rounded-button whitespace-nowrap text-sm">
+                            Accept All
+                        </button>
+                        <button id="customize-cookies" class="bg-gray-100 hover:bg-gray-200 text-[#4A3636] py-2 px-4 rounded-button whitespace-nowrap text-sm">
+                            Customize
+                        </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+<!-- Shopping Cart Slide-out -->
+    <div id="shopping-cart" class="fixed top-0 right-0 bottom-0 w-full md:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="h-full flex flex-col">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-[#4A3636]">
+                    Seu Carrinho
+                </h3>
+                <button id="close-cart" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-[#FF6B6B]">
+                    <i class="ri-close-line ri-lg"></i>
+                </button>
+            </div>
+    <div class="flex-grow overflow-y-auto p-4">
+        
+    <div class="p-4 border-t border-gray-100">
+        <div class="flex justify-between mb-2">
+            <span class="text-gray-600">Subtotal</span>
+            <span class="font-bold text-[#4A3636]">R$0,00</span>
+        </div>
+    <div class="flex justify-between mb-4">
+        <span class="text-gray-600">Delivery</span>
+        <span class="font-bold text-[#4A3636]">R$0,00</span>
+    </div>
+    <div class="flex justify-between mb-6">
+        <span class="font-bold text-lg text-[#4A3636]">Total</span>
+        <span class="font-bold text-lg text-[#FF6B6B]">R$0,00</span>
+    </div>
+        <button class="w-full bg-[#FF6B6B] hover:bg-[#ff5252] text-white py-3 px-6 rounded-button whitespace-nowrap">
+            Pedir!
+        </button>
+    </div>
+    </div>
+        </div>
+    </div>
+
+<!-- Botão de voltar ao topo -->
+    <button id="back-to-top" class="fixed bottom-4 right-4 w-12 h-12 bg-[#FF6B6B] text-white rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300">
+        <i class="ri-arrow-up-line ri-lg"></i>
+    </button>
+
+    <script src="home/home.js"></script>
+
+</body>
+</html>
