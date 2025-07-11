@@ -1,0 +1,152 @@
+TYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria - CupKat</title>
+    <link rel="shortcut icon" href="home/CupKat-Logo - Copia.png" type="image/x-icon">
+    <link rel="stylesheet" href="home/home.css">
+
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <!--Você está importando a biblioteca Tailwind CSS (versão 3.4.16) diretamente de um CDN (Content Delivery Network). Esse link permite usar Tailwind CSS em um projeto HTML puro, sem precisar instalar nada via npm ou configurar build tools como Webpack ou Vite.
+    Como funciona:
+    Ao carregar esse script no <head> ou antes do fechamento do <body> de sua página HTML, o Tailwind será aplicado.
+    Você poderá usar classes utilitárias como bg-blue-500, text-white, flex, p-4, etc., diretamente no seu HTML.-->
+
+    <script>
+        tailwind.config = {
+            theme: {
+            extend: {
+                colors: {
+                primary: "#FFD1DC", 
+                secondary: "#FFFAF0",
+                },
+                borderRadius: {
+                    none: "0px", //canto reto
+                    sm: "4px", //levemente arredondado
+                    DEFAULT: "8px", //valor padrão
+                    md: "12px", //médio
+                    lg: "16px", //grande
+                    xl: "20px", //extra grande
+                    "2xl": "24px", //muito grande
+                    "3xl": "32px", //mais arredondado ainda
+                    full: "9999px", // círculo completo
+                    bottom: "8px", //Personalizado (você teria que usar via class="rounded-bottom" se criar um plugin, pois Tailwind não reconhece "bottom" por padrão sem configuração extra)
+                },
+            },
+        },
+    };
+    </script>
+    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--Esses dois links informam ao navegador para iniciar conexões com o Google Fonts mais cedo, tornando o carregamento das fontes mais rápido.-->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <!--Esse link importa a fonte Pacifico do Google Fonts, que é uma fonte cursiva-->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!--Esse link importa duas fontes adicionais: Lato (com pesos 300, 400 e 700) e Playfair Display (com pesos 400, 500, 600 e 700). Essas fontes são mais versáteis e podem ser usadas para diferentes partes do design, como títulos e textos.-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <!--Esse link importa o Remix Icon, uma biblioteca de ícones vetoriais que pode ser usada para adicionar ícones ao seu site.-->
+</head>
+
+<body class="bg-[#FFF5EE] min-h-screen">
+
+<!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-primary bg-opacity-95 shadow-md z-50">
+    <!-- Esse código estiliza um elemento (provavelmente um cabeçalho ou barra de navegação) para que ele:
+    - Fique fixo no topo da tela,
+    - ubra toda a largura da tela (da esquerda até a direita),
+    - Tenha um fundo colorido com leve transparência,
+    - Uma sombra discreta,
+    - E fique acima de outros elementos na hierarquia visual da página. -->
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Cria uma seção centralizada e responsiva, com:
+    - Espaçamento interno confortável (padding)
+    - Itens dispostos em linha, com um à esquerda e outro à direita
+    - Verticalmente alinhados ao centro -->
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-[#FFD1DC] flex items-center justify-center mr-3">
+                <img src="home/CupKat-Logo - Copia.png" alt="logo">
+            </div>
+            <span class="font-['Pacifico'] text-[#4A3636] text-xl">CupKat</span>
+        </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Home</a>
+                <a href="#sobre" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Sobre</a>
+                <a href="#menu"class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Menu</a>
+                <a href="#delivery" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Delivery</a>
+                <a href="#contato" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Contato</a>
+            </nav>
+
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 flex items-center justify-center text-[#4A3636] hover:text-[#FF6B6B] cursor-pointer">
+                <i class="ri-user-line ri-lg"></i> <!-- Ícone de usuário -->
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center text-[#4A3636] hover:text-[#FF6B6B] cursor-pointer relative">
+                <i class="ri-shopping-bag-line ri-lg"></i> <!-- Ícone de sacola de compras -->
+            </div>
+            <button class="md:hidden w-8 h-8 flex items-center justify-center" id="mobile-menu-button">
+                <i class="ri-menu-line ri-lg text-[#4A3636]"></i>
+            </button>
+        </div>
+    </div>
+
+<!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+        <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+            <a href="index.html" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Home</a>
+            <a href="#sobre" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Sobre</a>
+            <a href="#menu" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Menu</a>
+            <a href="#delivery" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Delivery</a>
+            <a href="#contato" class="text-[#4A3636] hover:text-[#FF6B6B] py-2">Contato</a>
+        </div>
+    </div>
+    </header>
+
+<!-- Áreda de Login-->
+    <div class="container" id="container">
+
+        <div class="form-container register-container">
+            <form action="#">
+                <h1>
+                    Registre-se Aqui.
+                </h1>
+                <input type="text" placeholder="Nome Completo">
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Senha">
+                <button>
+                    Registre-se
+                <button>
+                    <span>
+                        Ou use sua conta
+                    </span>
+                
+                <div class="social-container">
+
+
+                </div>
+            </form>
+        </div>
+
+        <div class="form-container login-container">
+            <form action="#">
+                <h1>
+                    Faça Login Aqui.
+                </h1>
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Senha">
+                    <div class="content">
+                        <div class="checkbox">
+                            <input type="checkbox" name="checkbox" id="checkbox">
+                                <label for="Re"></label>
+
+                        </div>
+
+                    </div>
+
+        </div>
+    </div>
+    
+</body>
+</html>
