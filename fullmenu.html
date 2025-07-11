@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria - CupKat</title>
+    <link rel="shortcut icon" href="menu/CupKat-Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="menu/fullmenu.css">
+
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <!--Você está importando a biblioteca Tailwind CSS (versão 3.4.16) diretamente de um CDN (Content Delivery Network). Esse link permite usar Tailwind CSS em um projeto HTML puro, sem precisar instalar nada via npm ou configurar build tools como Webpack ou Vite.
+    Como funciona:
+    Ao carregar esse script no <head> ou antes do fechamento do <body> de sua página HTML, o Tailwind será aplicado.
+    Você poderá usar classes utilitárias como bg-blue-500, text-white, flex, p-4, etc., diretamente no seu HTML.-->
+
+    <script>
+        tailwind.config = {
+            theme: {
+            extend: {
+                colors: {
+                primary: "#FFD1DC", 
+                secondary: "#FFFAF0",
+                },
+                borderRadius: {
+                    none: "0px", //canto reto
+                    sm: "4px", //levemente arredondado
+                    DEFAULT: "8px", //valor padrão
+                    md: "12px", //médio
+                    lg: "16px", //grande
+                    xl: "20px", //extra grande
+                    "2xl": "24px", //muito grande
+                    "3xl": "32px", //mais arredondado ainda
+                    full: "9999px", // círculo completo
+                    bottom: "8px", //Personalizado (você teria que usar via class="rounded-bottom" se criar um plugin, pois Tailwind não reconhece "bottom" por padrão sem configuração extra)
+                },
+            },
+        },
+    };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--Esses dois links informam ao navegador para iniciar conexões com o Google Fonts mais cedo, tornando o carregamento das fontes mais rápido.-->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <!--Esse link importa a fonte Pacifico do Google Fonts, que é uma fonte cursiva-->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!--Esse link importa duas fontes adicionais: Lato (com pesos 300, 400 e 700) e Playfair Display (com pesos 400, 500, 600 e 700). Essas fontes são mais versáteis e podem ser usadas para diferentes partes do design, como títulos e textos.-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <!--Esse link importa o Remix Icon, uma biblioteca de ícones vetoriais que pode ser usada para adicionar ícones ao seu site.-->
+</head>
+
+<body class="bg-[#FFF5EE] min-h-screen">
+
+<!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-primary bg-opacity-95 shadow-md z-50">
+    <!-- Esse código estiliza um elemento (provavelmente um cabeçalho ou barra de navegação) para que ele:
+    - Fique fixo no topo da tela,
+    - ubra toda a largura da tela (da esquerda até a direita),
+    - Tenha um fundo colorido com leve transparência,
+    - Uma sombra discreta,
+    - E fique acima de outros elementos na hierarquia visual da página. -->
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Cria uma seção centralizada e responsiva, com:
+    - Espaçamento interno confortável (padding)
+    - Itens dispostos em linha, com um à esquerda e outro à direita
+    - Verticalmente alinhados ao centro -->
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-[#FFD1DC] flex items-center justify-center mr-3">
+                <img src="menu/CupKat-Logo.png" alt="logo">
+            </div>
+            <span class="font-['Pacifico'] text-[#4A3636] text-xl">CupKat</span>
+        </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Home</a>
+                <a href="index.html#sobre" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Sobre</a>
+                <a href="index.html#menu"class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Menu</a>
+                <a href="index.html#delivery" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Delivery</a>
+                <a href="index.html#contato" class="nav-link text-[#4A3636] hover:text-[#FF6B6B] font-medium">Contato</a>
+            </nav>
+
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 flex items-center justify-center text-[#4A3636] hover:text-[#FF6B6B] cursor-pointer">
+                <i class="ri-user-line ri-lg"></i> <!-- Ícone de usuário -->
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center text-[#4A3636] hover:text-[#FF6B6B] cursor-pointer relative">
+                <i class="ri-shopping-bag-line ri-lg"></i> <!-- Ícone de sacola de compras -->
+            </div>
+            <button class="md:hidden w-8 h-8 flex items-center justify-center" id="mobile-menu-button">
+                <i class="ri-menu-line ri-lg text-[#4A3636]"></i>
+            </button>
+        </div>
+    </div>
+
+<!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+        <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+            <a href="index.html" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Home</a>
+            <a href="index.html#sobre" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Sobre</a>
+            <a href="index.html#menu" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Menu</a>
+            <a href="index.html#delivery" class="text-[#4A3636] hover:text-[#FF6B6B] py-2 border-b border-gray-100">Delivery</a>
+            <a href="index.html#contato" class="text-[#4A3636] hover:text-[#FF6B6B] py-2">Contato</a>
+        </div>
+    </div>
+    </header>
+
+<!-- Seleção de Título da Página -->
+    <section class="pt-24 pb-8 md:pt-32 md:pb-12 bg-[#FFFAF0]">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center mb-4">
+                <a href="index.html" data-readdy="true" 
+                class="flex items-center text-[#4A3636] hover:text-[#FF6B6B]">
+                    <i class="ri-arrow-left-line mr-2"></i>
+                    <span>Página Principal</span>
+                </a>
+            </div>
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-[#4A3636] mb-4">
+                    Nosso Full Menu
+                </h1>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Explore nossa seleção completa de guloseimas e bebidas artesanais inspiradas em gatos, cada uma elaborada com amor e atenção aos detalhes.
+                </p>
+            </div>
+        </div>
+    </section>
+
+<!-- Seleção de Filtro e Pesquisa -->
+    <section class="py-6 bg-white sticky top-[60px] z-40 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="w-full md:w-auto flex items-center bg-gray-100 rounded-full px-4 py-2">
+                    <i class="ri-search-line text-gray-500 mr-2"></i>
+                    <input type="text" id="search-input" placeholder="Search our menu..." class="bg-transparent border-none w-full focus:outline-none text-sm">
+                </div>
+                
+                <div class="w-full md:w-auto flex flex-wrap items-center gap-2">
+                    <div class="filter-dropdown">
+                        <button class="flex items-center bg-gray-100 hover:bg-gray-200 text-[#4A3636] px-4 py-2 rounded-full whitespace-nowrap text-sm">
+                            <i class="ri-filter-3-line mr-2"></i>
+                            <span>Filtros</span>
+                            <i class="ri-arrow-down-s-line ml-2"></i>
+                        </button>
+                        <div class="filter-dropdown-content">
+                            <div class="mb-4">
+                                <h4 class="font-bold text-[#4A3636] mb-2 text-sm">Faixa de Preço</h4>
+                                <input type="range" min="0" max="20" value="15" class="price-slider" id="price-range">
+                                <div class="flex justify-between mt-2 text-xs text-gray-500">
+                                    <span>R$0</span>
+                                    <span id="price-value">R$15</span>
+                                    <span>R$20</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h4 class="font-bold text-[#4A3636] mb-2 text-sm">Preferências Alimentares</h4>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="vegetarian" class="custom-checkbox mr-2">
+                                        <label for="vegetarian" class="text-gray-600 text-sm">Vegetariano</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="vegan" class="custom-checkbox mr-2">
+                                        <label for="vegan" class="text-gray-600 text-sm">Vegano</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="gluten-free" class="custom-checkbox mr-2">
+                                        <label for="gluten-free" class="text-gray-600 text-sm">Sem - Glúten</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-[#4A3636] mb-2 text-sm">Alérgenos</h4>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="dairy-free" class="custom-checkbox mr-2">
+                                        <label for="dairy-free" class="text-gray-600 text-sm">Sem - Laticínios</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="nut-free" class="custom-checkbox mr-2">
+                                        <label for="nut-free" class="text-gray-600 text-sm">Sem - Nozes</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="egg-free" class="custom-checkbox mr-2">
+                                        <label for="egg-free" class="text-gray-600 text-sm">Sem - Ovos</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between">
+                                <button class="text-gray-500 text-sm">
+                                    Apagar
+                                </button>
+                                <button class="bg-[#FF6B6B] hover:bg-[#ff5252] text-white px-4 py-1 rounded-lg whitespace-nowrap text-sm">
+                                    Aplicar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-dropdown">
+                        <button class="flex items-center bg-gray-100 hover:bg-gray-200 text-[#4A3636] px-4 py-2 rounded-full whitespace-nowrap text-sm">
+                            <i class="ri-sort-desc-line mr-2"></i>
+                            <span>
+                                Classificar Por
+                            </span>
+                            <i class="ri-arrow-down-s-line ml-2"></i>
+                        </button>
+                        <div class="filter-dropdown-content">
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" name="sort" id="popular" class="custom-radio mr-2" checked>
+                                    <label for="popular" class="text-gray-600 text-sm">
+                                        Mais populares
+                                    </label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" name="sort" id="price-low" class="custom-radio mr-2">
+                                    <label for="price-low" class="text-gray-600 text-sm">
+                                        Preço: do menor para o maior
+                                    </label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" name="sort" id="price-high" class="custom-radio mr-2">
+                                    <label for="price-high" class="text-gray-600 text-sm">
+                                        Preço: do maior para o menor
+                                    </label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" name="sort" id="newest" class="custom-radio mr-2">
+                                    <label for="newest" class="text-gray-600 text-sm">
+                                        Mais recentes primeiro
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<!-- Categoria de Botão do filtro -->
+    <section class="py-4 bg-[#FFFAF0]">
+        <div class="container mx-auto px-4">
+            <div class="flex overflow-x-auto pb-2 hide-scrollbar">
+                <div class="flex space-x-2">
+                    <button class="category-filter-btn active bg-[#FFD1DC] text-white px-4 py-2 rounded-full whitespace-nowrap text-sm" data-category="all">
+                        Todos os Itens
+                    </button>
+                    <button class="category-filter-btn bg-white text-[#4A3636] px-4 py-2 rounded-full whitespace-nowrap text-sm" data-category="desserts">
+                        Sobremesas
+                    </button>
+                    <button class="category-filter-btn bg-white text-[#4A3636] px-4 py-2 rounded-full whitespace-nowrap text-sm" data-category="beverages">
+                        Bebidas
+                    </button>
+                    <button class="category-filter-btn bg-white text-[#4A3636] px-4 py-2 rounded-full whitespace-nowrap text-sm" data-category="seasonal">
+                        Sezonais
+                    </button>
+                    <button class="category-filter-btn bg-white text-[#4A3636] px-4 py-2 rounded-full whitespace-nowrap text-sm" data-category="cakes">
+                        Bolos
+                    </button>
+                    <button class="category-filter-btn bg-white text-[#4A3636] px-4 py-2 rounded-full whitespace-nowrap text-sm" data-category="pastries">
+                        Doces
+                    </button>
+                    <button class="category-filter-btn bg-white text-[#4A3636] px-4 py-2 rounded-full whitespace-nowrap text-sm" data-category="mochi">
+                        Mochi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Seleção de Itens do Menu -->
+    <section class="py-8 bg-[#FFFAF0]">
+        <div class="container mx-auto px-4">
+        <!-- Seleção de Sobremesas -->
+        <div class="mb-12" id="desserts-section">
+            <h2 class="text-2xl md:text-3xl font-bold text-[#4A3636] mb-6 flex items-center">
+                <i class="ri-cake-3-line mr-3 text-[#FF6B6B]"></i>Sobremesas
+            </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Item do Menu 1 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20close-up%20of%20a%20strawberry%20cream%20puff%20pastry%20on%20a%20white%20plate.%20The%20pastry%20is%20golden%20brown%20and%20filled%20with%20pink%20strawberry%20cream%20thats%20slightly%20visible.%20Theres%20a%20fresh%20strawberry%20on%20top%20and%20a%20light%20dusting%20of%20powdered%20sugar.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=menu1&orientation=landscape" alt="Strawberry Cream Puff" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Folhado De Creme De Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">
+                            R$8,50
+                        </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">
+                        Massa choux leve recheada com creme de morango e coberta com morango fresco e açúcar de confeiteiro.
+                    </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                        </div>
+                <div class="flex justify-between items-center">
+                    <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                        <i class="ri-arrow-right-s-line"></i>Personalizar
+                    </button>
+                    <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                        <i class="ri-shopping-cart-line mr-2"></i>Add
+                    </button>
+                </div>
+                </div>
+            </div>
+            <!-- Item do Menu 2 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20Japanese%20strawberry%20roll%20cake%20%28Swiss%20roll%29%20on%20a%20white%20plate.%20The%20cake%20has%20a%20perfect%20spiral%20pattern%20with%20white%20cream%20and%20fresh%20strawberry%20pieces%20visible%20in%20the%20filling.%20The%20exterior%20is%20a%20light%20sponge%20cake.%20Theres%20a%20small%20fork%20beside%20it%20and%20a%20few%20strawberry%20slices%20as%20garnish.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=menu2&orientation=landscape" alt="Strawberry Roll Cake" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Bolo De Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">
+                            R$12,50
+                        </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">
+                        Bolo macio enrolado com morangos frescos e chantilly, uma delícia clássica do estilo japonês.
+                    </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                <div class="flex justify-between items-center">
+                    <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                        <i class="ri-arrow-right-s-line"></i>Personalizar
+                    </button>
+                    <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                        <i class="ri-shopping-cart-line mr-2"></i>Add
+                    </button>
+                </div>
+                </div>
+            </div>
+            <!-- Item do Menu 3 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20cat-shaped%20strawberry%20mousse%20dessert%20on%20a%20white%20plate.%20The%20mousse%20is%20light%20pink%20and%20shaped%20like%20a%20cute%20cat%20face%20with%20chocolate%20details%20for%20the%20eyes%20and%20whiskers.%20There%20are%20fresh%20strawberry%20pieces%20around%20it%20as%20decoration.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=menu3&orientation=landscape" alt="Neko Strawberry Mousse" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                    <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                        Popular
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Mousse de Morango Neko
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">
+                            R$7,90
+                        </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">
+                        Mousse de morango em formato de gato com detalhes de chocolate, nossa sobremesa exclusiva que é tão fofa quanto deliciosa.
+                    </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Chocolate
+                            </span>
+                        </div>
+                <div class="flex justify-between items-center">
+                    <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                        <i class="ri-arrow-right-s-line"></i>Personalizar
+                    </button>
+                    <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                        <i class="ri-shopping-cart-line mr-2"></i>Add
+                    </button>
+                </div>
+                </div>
+            </div>
+            <!-- Item do Menu 4 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts mochi">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20daifuku%20%28Japanese%20mochi%20with%20strawberry%20filling%29%20on%20a%20small%20white%20plate.%20The%20mochi%20is%20dusted%20with%20a%20light%20coating%20of%20potato%20starch%20and%20has%20a%20fresh%20strawberry%20visible%20through%20the%20translucent%20mochi%20skin.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=menu4&orientation=landscape" alt="Strawberry Daifuku" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Daifuku de Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">
+                            R$11,90
+                        </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">
+                        Mochi tradicional com um morango inteiro dentro, envolto em um exterior macio e mastigável de bolo de arroz.
+                    </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Sem Glúten
+                            </span>
+                            <span class="allergen-tag bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Arroz
+                            </span>
+                        </div>
+                <div class="flex justify-between items-center">
+                    <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                        <i class="ri-arrow-right-s-line"></i>Personalizar
+                    </button>
+                    <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                        <i class="ri-shopping-cart-line mr-2"></i>Add
+                    </button>
+                </div>
+                </div>
+            </div>
+            <!-- Item do Menu 5 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20parfait%20in%20a%20tall%20glass.%20The%20parfait%20has%20layers%20of%20strawberry%20ice%20cream%2C%20fresh%20strawberries%2C%20whipped%20cream%2C%20and%20crumbled%20cookies.%20Its%20topped%20with%20a%20whole%20strawberry%20and%20a%20cat-shaped%20cookie.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=menu5&orientation=landscape" alt="Strawberry Parfait" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                        <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                            Popular
+                        </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Parfait de Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">
+                            R$19,90
+                        </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">
+                        Camadas de sorvete, frutas vermelhas frescas e biscoitos cobertos com chantilly e um biscoito em forma de gato.
+                    </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                <div class="flex justify-between items-center">
+                    <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                        <i class="ri-arrow-right-s-line"></i>Personalizar
+                    </button>
+                    <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                        <i class="ri-shopping-cart-line mr-2"></i>Add
+                    </button>
+                </div>
+                </div>
+            </div>
+            <!-- Item do Menu 6 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts pastries">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20tart%20on%20a%20white%20plate.%20The%20tart%20has%20a%20golden%20pastry%20shell%20filled%20with%20custard%20cream%20and%20topped%20with%20glazed%20fresh%20strawberries%20arranged%20in%20a%20pattern.%20Theres%20a%20small%20mint%20leaf%20garnish.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=menu6&orientation=landscape" alt="Strawberry Tart" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Torta de Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">
+                            R$14,90 (Und)
+                        </span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-3">
+                        Torta amanteigada com creme e frutas vermelhas frescas, perfeitamente glaceada e decorada com hortelã.
+                    </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                <div class="flex justify-between items-center">
+                    <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                        <i class="ri-arrow-right-s-line"></i>Personalizar
+                    </button>
+                    <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                        <i class="ri-shopping-cart-line mr-2"></i>Add
+                    </button>
+                </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+<!-- Seleção de Bebidas -->
+        <div class="mb-12" id="beverages-section">
+            <h2 class="text-2xl md:text-3xl font-bold text-[#4A3636] mb-6 flex items-center">
+                <i class="ri-cup-line mr-3 text-[#FF6B6B]"></i>Bebidas
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Item do Menu 1 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="beverages">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20latte%20in%20a%20clear%20glass%20mug.%20The%20drink%20has%20a%20pink%20strawberry%20layer%20at%20the%20bottom%2C%20white%20milk%20in%20the%20middle%2C%20and%20is%20topped%20with%20a%20layer%20of%20foam%20with%20a%20cat%20face%20design%20drawn%20in%20chocolate.%20Theres%20a%20strawberry%20slice%20on%20the%20rim%20of%20the%20glass.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=bev1&orientation=landscape" alt="Strawberry Latte" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                    <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                        Popular
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Café com leite de morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$6,25</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Espresso com calda de morango e leite, coberto com arte de cara de gato no latte e guarnição de morango.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Cafeína
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 2 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="beverages">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20matcha%20latte%20in%20a%20white%20ceramic%20cup.%20The%20drink%20is%20a%20vibrant%20green%20with%20a%20white%20foam%20layer%20on%20top%20featuring%20a%20cat%20face%20latte%20art%20design.%20Theres%20a%20small%20bamboo%20matcha%20whisk%20visible%20in%20the%20background.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=bev2&orientation=landscape" alt="Matcha Latte" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Matcha Latte
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$5,50</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Matcha em pó premium com leite vaporizado, com nossa exclusiva arte de cara de gato no latte por cima.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Cafeína
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 3 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="beverages">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20milk%20tea%20in%20a%20clear%20cup%20with%20a%20wide%20straw.%20The%20drink%20is%20light%20pink%20with%20tapioca%20pearls%20visible%20at%20the%20bottom.%20The%20cup%20has%20a%20cute%20cat%20face%20design%20printed%20on%20it.%20There%20are%20fresh%20strawberry%20slices%20as%20garnish.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=bev3&orientation=landscape" alt="Strawberry Boba Tea" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Chá Boba de Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$12,50</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Chá de leite com morango e pérolas de tapioca com decoração de morango fresco.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Cafeína
+                            </span>
+                            <span class="allergen-tag bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Tapioca
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 4 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="beverages">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20hot%20chocolate%20in%20a%20pink%20mug%20with%20a%20cat-shaped%20handle.%20The%20drink%20is%20topped%20with%20whipped%20cream%2C%20chocolate%20shavings%2C%20and%20a%20strawberry.%20Theres%20a%20cat-shaped%20cookie%20on%20the%20side.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=bev4&orientation=landscape" alt="Cat Hot Chocolate" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                        <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                            Popular
+                        </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Gato Chocolate Quente
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$10,90</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Chocolate quente delicioso com marshmallow em formato de gato, servido em nossa caneca especial com alça de gato e um biscoito ao lado.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Chocolate
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 5 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="beverages">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20strawberry%20smoothie%20in%20a%20mason%20jar%20with%20a%20striped%20paper%20straw.%20The%20smoothie%20is%20bright%20pink%20and%20topped%20with%20whipped%20cream%20and%20fresh%20strawberry%20pieces.%20Theres%20a%20cat-shaped%20cookie%20garnish.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=bev5&orientation=landscape" alt="Strawberry Smoothie" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Batido de Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$14,90</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Morangos frescos misturados com iogurte e mel, cobertos com chantilly e um biscoito em forma de gato.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 6 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="beverages">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20Japanese-style%20iced%20coffee%20in%20a%20tall%20glass.%20The%20coffee%20is%20served%20over%20a%20large%20ice%20cube%2C%20with%20a%20layer%20of%20cream%20floating%20on%20top.%20Theres%20a%20small%20cat-shaped%20cookie%20on%20the%20side%20and%20a%20metal%20straw%20in%20the%20glass.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=bev6&orientation=landscape" alt="Japanese Iced Coffee" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Café Gelado
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$6,90</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Café frio com creme, coado lentamente, servido sobre um grande cubo de gelo, com canudo de metal e biscoito de gato.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Cafeína
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+<!-- Seleção Sazonal -->
+        <div class="mb-12" id="seasonal-section">
+            <h2 class="text-2xl md:text-3xl font-bold text-[#4A3636] mb-6 flex items-center">
+                <i class="ri-cup-line mr-3 text-[#FF6B6B]"></i>Especiais Sazonais
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Item do Menu 1 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="seasonal desserts cakes">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20sakura%20%28cherry%20blossom%29%20strawberry%20cake%20on%20a%20white%20plate.%20The%20cake%20has%20layers%20of%20pink%20sponge%20cake%20with%20strawberry%20cream%20filling.%20Its%20decorated%20with%20fresh%20strawberries%20and%20small%20sugar%20cherry%20blossoms.%20The%20background%20is%20a%20soft%20cream%20color%20with%20subtle%20cherry%20blossom%20petals.&width=600&height=400&seq=seas1&orientation=landscape" alt="Sakura Strawberry Cake" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                    <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                        Limitado
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Bolo De Morango Sakura
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$26,90 (Fatia)</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Especial de primavera com essência de flor de cerejeira, camadas de bolo rosa com recheio de creme de morango.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 2 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="seasonal desserts">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20summer-themed%20strawberry%20shaved%20ice%20dessert%20in%20a%20glass%20bowl.%20The%20shaved%20ice%20is%20topped%20with%20fresh%20strawberries%2C%20condensed%20milk%2C%20and%20a%20cat-shaped%20cookie.%20Theres%20a%20small%20paper%20umbrella%20as%20decoration.%20The%20background%20is%20a%20soft%20cream%20color.&width=600&height=400&seq=seas2&orientation=landscape" alt="Strawberry Kakigori" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                        <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                            Limitado
+                        </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Kakigori de morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$13,90</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Sobremesa japonesa especial de verão com gelo raspado coberto com morangos frescos, leite condensado e um biscoito de gato.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 3 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="seasonal desserts pastries">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=An%20autumn-themed%20strawberry%20and%20chestnut%20mont%20blanc%20dessert%20on%20a%20small%20plate.%20The%20dessert%20has%20a%20tart%20base%20topped%20with%20strawberry%20cream%20and%20chestnut%20cream%20piped%20to%20look%20like%20spaghetti.%20Its%20decorated%20with%20a%20glazed%20chestnut%20and%20strawberry.%20The%20background%20is%20a%20soft%20cream%20color%20with%20subtle%20autumn%20leaf%20decorations.&width=600&height=400&seq=seas3&orientation=landscape" alt="Strawberry Mont Blanc" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                        <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                            Limitado
+                        </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Morango Mont Blanc
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$12,90</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Especial de outono com creme de castanha e morango em uma base de torta com guarnição sazonal.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                            <span class="allergen-tag bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Castanhas
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 4 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="seasonal beverages">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20winter-themed%20hot%20strawberry%20drink%20in%20a%20white%20mug.%20The%20drink%20is%20deep%20red%20and%20topped%20with%20whipped%20cream%20and%20a%20strawberry.%20Theres%20a%20cat-shaped%20cinnamon%20cookie%20on%20the%20side.%20The%20background%20shows%20subtle%20snowflake%20decorations%20and%20a%20soft%20cream%20color.&width=600&height=400&seq=seas4&orientation=landscape" alt="Hot Strawberry Cider" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                        <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                            Limitado
+                        </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Cidra Quente De Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$18,90</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Especial de inverno com canela e cravo, coberto com chantilly e servido com um biscoito de canela em formato de gato.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+<!-- Cakes Section -->
+        <div class="mb-12" id="cakes-section">
+            <h2 class="text-2xl md:text-3xl font-bold text-[#4A3636] mb-6 flex items-center">
+                <i class="ri-cup-line mr-3 text-[#FF6B6B]"></i>Bolos
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Item do Menu 1 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts cakes">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20close-up%20shot%20of%20a%20beautiful%20strawberry%20shortcake%20with%20layers%20of%20fluffy%20sponge%20cake%2C%20fresh%20whipped%20cream%2C%20and%20juicy%20strawberries.%20The%20cake%20is%20on%20a%20white%20plate%20against%20a%20soft%20pink%20background.%20The%20lighting%20is%20bright%20and%20clean%2C%20highlighting%20the%20texture%20of%20the%20cake%20and%20the%20freshness%20of%20the%20strawberries.&width=600&height=400&seq=cake1&orientation=landscape" alt="Strawberry Shortcake" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                        <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                            Popular
+                        </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Bolo Pata de Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$22,90 (Fatia)</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Camadas de bolo fofo com morangos frescos e chantilly, um equilíbrio perfeito de doçura.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 2 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts cakes">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20beautiful%20strawberry%20cheesecake%20on%20a%20white%20cake%20stand.%20The%20cheesecake%20has%20a%20smooth%20cream%20cheese%20top%20with%20a%20strawberry%20glaze%20and%20fresh%20strawberries%20arranged%20in%20a%20pattern.%20The%20crust%20is%20golden%20brown%20and%20visible%20on%20the%20sides.%20The%20background%20is%20a%20soft%20cream%20color%20with%20subtle%20pink%20accents.&width=600&height=400&seq=cake2&orientation=landscape" alt="Strawberry Cheesecake" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Cheesecake De Morango
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$12,90 (Fatia)</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Cheesecake cremoso com crosta amanteigada de biscoito graham, coberto com cobertura de morango e frutas vermelhas frescas.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Item do Menu 3 -->
+            <div class="menu-item bg-white rounded-lg shadow-md overflow-hidden" data-category="desserts cakes">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://readdy.ai/api/search-image?query=A%20cute%20cat-shaped%20strawberry%20cake%20on%20a%20white%20plate.%20The%20cake%20is%20shaped%20like%20a%20cat%20face%20with%20pink%20strawberry%20frosting%2C%20chocolate%20details%20for%20the%20eyes%20and%20whiskers%2C%20and%20fresh%20strawberry%20ears.%20The%20background%20is%20a%20soft%20cream%20color%20with%20subtle%20pink%20accents.&width=600&height=400&seq=cake3&orientation=landscape" alt="Cat Face Strawberry Cake" class="w-full h-full object-cover object-top">
+                        <button class="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-[#FF6B6B] hover:bg-[#FF6B6B] hover:text-white transition-colors quick-view-btn">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                        <div class="absolute top-2 left-2 bg-[#FF6B6B] text-white text-xs font-bold px-2 py-1 rounded-full">
+                            Popular
+                        </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-[#4A3636] text-lg">
+                            Bolo De Morango Cara De Gato
+                        </h3>
+                        <span class="text-[#FF6B6B] font-bold">R$18,90 (Fatia)</span>
+                    </div>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Nosso bolo exclusivo em formato de gato com cobertura de morango, detalhes de chocolate e espigas de morango frescas.
+                        </p>
+                        <!-- TAGS DE ALÉRGENOS ESTILIZADAS -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="allergen-tag bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Vegetariano
+                            </span>
+                            <span class="allergen-tag bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Laticínios
+                            </span>
+                            <span class="allergen-tag bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Ovos
+                            </span>
+                            <span class="allergen-tag bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Glúten
+                            </span>
+                            <span class="allergen-tag bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                Contém Chocolate
+                            </span>
+                        </div>
+                    <div class="flex justify-between items-center">
+                        <button class="text-[#4A3636] hover:text-[#FF6B6B] text-sm font-medium">
+                            <i class="ri-arrow-right-s-line"></i>Personalizar 
+                        </button>
+                        <button class="bg-primary hover:bg-[#ffbbc9] text-[#4A3636] py-2 px-4 rounded-lg whitespace-nowrap text-sm">
+                            <i class="ri-shopping-cart-line mr-2"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+<!-- Shopping Cart Slide-out -->
+    <div id="shopping-cart" class="fixed top-0 right-0 bottom-0 w-full md:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="h-full flex flex-col">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-[#4A3636]">
+                    Seu Carrinho
+                </h3>
+                <button id="close-cart" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-[#FF6B6B]">
+                    <i class="ri-close-line ri-lg"></i>
+                </button>
+            </div>
+    <div class="flex-grow overflow-y-auto p-4">
+        
+    <div class="p-4 border-t border-gray-100">
+        <div class="flex justify-between mb-2">
+            <span class="text-gray-600">Subtotal</span>
+            <span class="font-bold text-[#4A3636]">R$0,00</span>
+        </div>
+    <div class="flex justify-between mb-4">
+        <span class="text-gray-600">Delivery</span>
+        <span class="font-bold text-[#4A3636]">R$0,00</span>
+    </div>
+    <div class="flex justify-between mb-6">
+        <span class="font-bold text-lg text-[#4A3636]">Total</span>
+        <span class="font-bold text-lg text-[#FF6B6B]">R$0,00</span>
+    </div>
+        <button class="w-full bg-[#FF6B6B] hover:bg-[#ff5252] text-white py-3 px-6 rounded-button whitespace-nowrap">
+            Pedir!
+        </button>
+    </div>
+    </div>
+        </div>
+    </div>
+
+<!-- Modal de visualização rápida -->
+    <div class="quick-view-modal" id="quick-view-modal">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="relative">
+                <button id="close-modal" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md text-gray-500 hover:text-[#FF6B6B] z-10">
+                    <i class="ri-close-line ri-lg"></i>
+                </button>
+                
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/2">
+                        <img src="https://readdy.ai/api/search-image?query=A%20close-up%20shot%20of%20a%20beautiful%20strawberry%20shortcake%20with%20layers%20of%20fluffy%20sponge%20cake%2C%20fresh%20whipped%20cream%2C%20and%20juicy%20strawberries.%20The%20cake%20is%20on%20a%20white%20plate%20against%20a%20soft%20pink%20background.%20The%20lighting%20is%20bright%20and%20clean%2C%20highlighting%20the%20texture%20of%20the%20cake%20and%20the%20freshness%20of%20the%20strawberries.&width=800&height=800&seq=modal1&orientation=squarish" alt="Strawberry Shortcake" class="w-full h-full object-cover object-top">
+                    </div>
+                    <div class="md:w-1/2 p-6">
+                        <h2 class="text-2xl font-bold text-[#4A3636] mb-2">Strawberry Shortcake</h2>
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-[#FF6B6B]">
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-fill"></i>
+                                <i class="ri-star-half-fill"></i>
+                            </div>
+                            <span class="text-gray-500 text-sm ml-2">(128 reviews)</span>
+                        </div>
+                        <p class="text-[#FF6B6B] font-bold text-xl mb-4">$6.95</p>
+                        <p class="text-gray-600 mb-6">Layers of fluffy sponge cake with fresh strawberries and whipped cream, a perfect balance of sweetness. Our signature dessert is made fresh daily using locally sourced strawberries and organic ingredients whenever possible.</p>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-bold text-[#4A3636] mb-2">Allergen Information</h3>
+                            <div class="flex flex-wrap">
+                                <span class="allergen-tag bg-green-100 text-green-800">Vegetarian</span>
+                                <span class="allergen-tag bg-red-100 text-red-800">Contains Dairy</span>
+                                <span class="allergen-tag bg-yellow-100 text-yellow-800">Contains Eggs</span>
+                                <span class="allergen-tag bg-purple-100 text-purple-800">Contains Gluten</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-bold text-[#4A3636] mb-2">Nutritional Information</h3>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Calories:</span>
+                                    <span class="font-medium">320 kcal</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Fat:</span>
+                                    <span class="font-medium">18g</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Carbs:</span>
+                                    <span class="font-medium">38g</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Protein:</span>
+                                    <span class="font-medium">5g</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Sugar:</span>
+                                    <span class="font-medium">24g</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Sodium:</span>
+                                    <span class="font-medium">180mg</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="font-bold text-[#4A3636] mb-2">Customization</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="custom-checkbox mr-2">
+                                        <span class="text-gray-600">Extra Strawberries (+$1.50)</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="custom-checkbox mr-2">
+                                        <span class="text-gray-600">Extra Whipped Cream (+$0.75)</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="custom-checkbox mr-2">
+                                        <span class="text-gray-600">Birthday Candle (+$0.50)</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="custom-checkbox mr-2">
+                                        <span class="text-gray-600">Special Message (+$1.00)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center mb-6">
+                            <div class="flex items-center mr-6">
+                                <button class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
+                                    <i class="ri-subtract-line text-[#4A3636]"></i>
+                                </button>
+                                <span class="mx-4 text-[#4A3636] font-medium">1</span>
+                                <button class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">
+                                    <i class="ri-add-line text-[#4A3636]"></i>
+                                </button>
+                            </div>
+                            <button class="flex-grow bg-[#FF6B6B] hover:bg-[#ff5252] text-white py-3 px-6 rounded-button whitespace-nowrap">
+                                Add to Cart - $6.95
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center text-sm text-gray-500">
+                            <div class="flex items-center mr-4">
+                                <i class="ri-heart-line mr-1"></i>
+                                <span>Add to Favorites</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="ri-share-line mr-1"></i>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Botão de voltar ao topo -->
+    <button id="back-to-top" class="fixed bottom-4 right-4 w-12 h-12 bg-[#FF6B6B] text-white rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300">
+        <i class="ri-arrow-up-line ri-lg"></i>
+    </button>
+
+<!-- Footer -->
+    <footer class="bg-[#4A3636] text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3">
+                            <span class="font-['Pacifico'] text-[#FF6B6B] text-lg">
+                                <img src="home.imagens/CupKat-Logo.png" alt="">
+                            </span>
+                        </div>
+                            <span class="font-['Pacifico'] text-white text-xl">
+                                CupKat
+                            </span>
+                    </div>
+                            <p class="text-gray-300 mb-4">
+                                Um café aconchegante onde sobremesas inspiradas em gatos se unem à adorável estética felina. Cada guloseima é preparada com amor e carinho.
+                            </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-300 hover:text-white">
+                                <i class="ri-instagram-line ri-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-300 hover:text-white">
+                                <i class="ri-facebook-fill ri-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-300 hover:text-white">
+                                <i class="ri-twitter-x-line ri-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-300 hover:text-white">
+                                <i class="ri-tiktok-line ri-lg"></i>
+                            </a>
+                        </div>
+                </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">
+                            Links Rápidos
+                        </h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#home" class="text-gray-300 hover:text-white">Home</a>
+                            </li>
+                            <li>
+                                <a href="#menu" class="text-gray-300 hover:text-white">Menu</a>
+                            </li>
+                            <li>
+                                <a href="#sobre" class="text-gray-300 hover:text-white">Sobre Nós</a>
+                            </li>
+                            <li>
+                                <a href="#delivery" class="text-gray-300 hover:text-white">Delivery</a>
+                            </li>
+                            <li>
+                                <a href="#contato" class="text-gray-300 hover:text-white">Contato</a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-gray-300 hover:text-white">Careers</a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-gray-300 hover:text-white">Privacy Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">
+                        Horário de Funcionamento
+                    </h3>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between">
+                                <span class="text-gray-300">Segunda - Sexta</span>
+                                <span class="text-white">8h00 - 20h00 </span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-gray-300">Sábado - Domingo</span>
+                                <span class="text-white">9h00 - 21h00 </span>
+                            </li>
+                        </ul>
+                    <h3 class="text-xl font-bold mt-6 mb-4">
+                        Contato
+                    </h3>
+                    <address class="not-italic text-gray-300">
+                        Rua das Rosas Doces, 123<br />
+                        Bela Vista, São Paulo - SP, 01310-050<br />
+                        Phone: (555) 123-4567<br />
+                        Email: ola@cupkat.cafe
+                    </address>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    © 2025 CupKat - Cafeteria. Todos os direitos reservados.
+                </p>
+            <div class="flex space-x-4">
+                <div class="w-8 h-5 flex items-center justify-center">
+                    <i class="ri-visa-line ri-lg text-gray-300"></i>
+                </div>
+                <div class="w-8 h-5 flex items-center justify-center">
+                    <i class="ri-mastercard-line ri-lg text-gray-300"></i>
+                </div>
+                <div class="w-8 h-5 flex items-center justify-center">
+                    <i class="ri-paypal-line ri-lg text-gray-300"></i>
+                </div>
+                <div class="w-8 h-5 flex items-center justify-center">
+                    <i class="ri-apple-fill ri-lg text-gray-300"></i>
+                </div>
+            </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="menu/fullmenu.js"></script>
+
+</body>
+</html>
